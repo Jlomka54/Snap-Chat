@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import authRoutes from "./routes/auth.js";
+
 dotenv.config();
 
 const app = express();
@@ -10,9 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send({ message: "Hello from Snap-Chat" });
-});
+// Routes
+app.use("/api/auth", authRoutes);
 async function startServer() {
   try {
     await mongoose.connect(
