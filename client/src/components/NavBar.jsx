@@ -1,6 +1,14 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { selectIsAuth } from "../redux/features/auth/selectors";
+import { logout } from "../redux/features/auth/authSlice";
 export const NavBar = () => {
-  const isAuth = false;
+  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+    window.localStorage.removeItem("token");
+  };
   return (
     <div className="flex py-4 justify-between items-center">
       <span className=" flex justify-center items-center w-6 h-6 bg-gray-600 text-xs text-white rounded-sm"></span>
@@ -47,16 +55,22 @@ export const NavBar = () => {
       )}
 
       <div>
-        <button
-          type="button"
-          className="flex justify-center items-center bg-gray-600 tesxt-xs text-white rounded-sm px-4 py-2"
-        >
-          {isAuth ? (
-            <Link to={"/logout"}>Logout</Link>
-          ) : (
-            <Link to={"/login"}>Login</Link>
-          )}
-        </button>
+        {isAuth ? (
+          <button
+            type="button"
+            onClick={logoutHandler}
+            className="flex justify-center items-center bg-gray-600 tesxt-xs text-white rounded-sm px-4 py-2"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            to={"/login"}
+            className="flex justify-center items-center bg-gray-600 tesxt-xs text-white rounded-sm px-4 py-2"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -7,8 +7,16 @@ import { AddPostPage } from "./pages/AddPostPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { LoginPage } from "./pages/LoginPage";
 import { EditPostPage } from "./pages/EditPostPage";
+import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getMe } from "./redux/features/auth/operations";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getMe());
+  }, []);
   return (
     <Layout>
       <Routes>
@@ -20,6 +28,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/new" element={<AddPostPage />} />
       </Routes>
+      <ToastContainer position="bottom-leftf" />
     </Layout>
   );
 }

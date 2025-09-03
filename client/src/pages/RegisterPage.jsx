@@ -1,19 +1,31 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/features/auth/operations";
+import { selectIsAuth, selectStatus } from "../redux/features/auth/selectors";
+import { toast } from "react-toastify";
 
 export const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     setPassword("");
     setUsername("");
     dispatch(registerUser({ username, password }));
   };
+  const status = useSelector(selectStatus);
+  const isAuth = useSelector(selectIsAuth);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (status) {
+      toast(status);
+    }
+    if (isAuth) {
+      navigate("/");
+    }
+  }, [status, isAuth, navigate]);
   return (
     <div>
       <form

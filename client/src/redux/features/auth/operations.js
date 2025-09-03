@@ -38,3 +38,18 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
+export const getMe = createAsyncThunk(
+  "auth/getMe",
+  async ({ rejectWithValue }) => {
+    try {
+      const { data } = await axiosInstance.get("/auth/me");
+      if (data.token) {
+        window.localStorage.setItem("token", data.token);
+      }
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
